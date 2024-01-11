@@ -5,3 +5,4 @@ Airflow for scheduling the scripts, DBT for cleaning and modeling this data. Dat
 - Tech stack: DBT, Bigquery, Airflow, Docker, Python.
 
 ## 
+![Screenshot 2024-01-11 at 5 59 54 PM](https://github.com/VyPhammm/Pull-and-modeling-from-raw-youtube-api/assets/127418764/92c9faf0-fb5a-4c4e-a3ef-e46227b2f44e)
