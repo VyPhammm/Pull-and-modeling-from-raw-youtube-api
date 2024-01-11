@@ -7,21 +7,16 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.contrib.operators.bigquery_operator import BigQueryExecuteQueryOperator
 from airflow_dbt.operators.dbt_operator import DbtRunOperator
 
-from social.operators.youtube.overviews_reports import YoutubeOverviewReportsOperator
-from social.operators.youtube.traffic_sources import YoutubeTrafficSourcesOperator
-from social.operators.youtube.content import YoutubeContentOperator
-from social.operators.youtube.geographic_areas import YoutubeGeographicOperator
-from social.operators.youtube.demographics import YoutubeDemographicsOperator
-from social.scripts.youtube_utils import Channels, Params_yt
+from operators.youtube.overviews_reports import YoutubeOverviewReportsOperator
+from operators.youtube.traffic_sources import YoutubeTrafficSourcesOperator
+from operators.youtube.content import YoutubeContentOperator
+from operators.youtube.geographic_areas import YoutubeGeographicOperator
+from operators.youtube.demographics import YoutubeDemographicsOperator
+from scripts.youtube_utils import Channels, Params_yt
 from utils.alerting.airflow import airflow_callback
 from utils.common import set_env_value
 from utils.data_upload.bigquery_upload import create_external_bq_table_to_gcs
 from utils.dbt import default_args_for_dbt_operators
-
-from social.scripts.adhoc_social_followers import (
-    post_followers_data
-)
-
 
 DAG_START_DATE = set_env_value(
     production=datetime(2023, 11, 1), dev=datetime(2023, 12, 25)
@@ -62,15 +57,6 @@ def create_big_lake_table_task(bq_table_name, gcs_prefix, gcs_partition_expr):
         gcs_object_prefix=gcs_prefix,
         gcs_partition_expr=gcs_partition_expr,
     )
-
-
-@task(task_id="get_post_ids")
-def get_facebook_post_ids_task(**kwargs):
-    post_ids = get_facebook_post_ids(
-        gcp_conn_id=GCP_CONN_ID, bq_project=BIGQUERY_PROJECT, **kwargs
-    )
-    kwargs["ti"].xcom_push(key="post_ids", value=post_ids)
-
 
 with DAG(
     dag_id="youtube_engagement",
