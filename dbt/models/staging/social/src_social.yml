@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: raw_youtube
+    database: data-platform
+    schema: raw_youtube
+    tables:
+
+      - name: youtube_overview
+
+      - name: youtube_traffic_sources
+
+      - name: youtube_contents
+
+      - name: youtube_demographics
+
+      - name: youtube_geographic_areas
